@@ -13,7 +13,8 @@ namespace WebApplication.PL
 	{
 		public static void Main(string[] args)
 		{
-			CreateHostBuilder(args).Build().Run();
+			CreateHostBuilder(args).Build().Run();	// Application is Ready for Requests
+
 		}
 
 		public static IHostBuilder CreateHostBuilder(string[] args) =>

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using WebApplication.PL.Models;
+using WebApplication.PL.ViewModels;
 
 namespace WebApplication.PL.Controllers
 {
