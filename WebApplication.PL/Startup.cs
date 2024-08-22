@@ -15,12 +15,12 @@ namespace WebApplication.PL
 {
 	public class Startup
 	{
+		public IConfiguration Configuration { get; }
 		public Startup(IConfiguration configuration)
 		{
 			Configuration = configuration;
 		}
 
-		public IConfiguration Configuration { get; }
 
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
@@ -35,7 +35,7 @@ namespace WebApplication.PL
 			*/
 			services.AddDbContext<ApplicationDbContext>(options =>
 			{
-				options.UseSqlServer("Server = .; Database = MVCApplication; Trusted_Connection = True;");
+				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
 			}); //Default Scoped (ApplicationDbContext,DbContextOptions)
 		}
 
