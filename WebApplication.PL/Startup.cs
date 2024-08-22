@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -8,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApplication.DAL.Data;
 
 namespace WebApplication.PL
 {
@@ -24,6 +26,17 @@ namespace WebApplication.PL
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddControllersWithViews();
+			//services.AddTransient<ApplicationDbContext>();	// per request
+			//services.AddSingleton<ApplicationDbContext>();	//Per session
+
+			/*
+			services.AddScoped<ApplicationDbContext>();     // just on per request
+			services.AddScoped<DbContextOptions<ApplicationDbContext>>();
+			*/
+			services.AddDbContext<ApplicationDbContext>(options =>
+			{
+				options.UseSqlServer("Server = .; Database = MVCApplication; Trusted_Connection = True;");
+			}); //Default Scoped (ApplicationDbContext,DbContextOptions)
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
