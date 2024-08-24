@@ -7,8 +7,9 @@ using WebApplication.DAL.Models;
 
 namespace WebApplication.BLL.Interfaces
 {
-	public interface IDepartmentRepository: IGenericRepository<Department>
-	{
-		
-	}
+    public interface IEmployeeRepository:IGenericRepository<Employee>
+    {
+      IQueryable<Employee> GetEmployeesByAddress(string address);
+
+    }
 }

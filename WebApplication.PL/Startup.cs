@@ -41,6 +41,7 @@ namespace WebApplication.PL
 			}); //Default Scoped (ApplicationDbContext,DbContextOptions)
 
 			services.AddScoped<IDepartmentRepository,DepartmentRepo>();
+			services.AddScoped<IEmployeeRepository,EmployeeRepo>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
