@@ -7,7 +7,7 @@ using WebApplication.DAL.Models;
 
 namespace WebApplication.BLL.Interfaces
 {
-	internal interface IDepartmentRepository
+	public interface IDepartmentRepository
 	{
 		IEnumerable<Department> GetAll();
 

@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApplication.BLL.Interfaces;
+using WebApplication.BLL.Repositories;
 using WebApplication.DAL.Data;
 
 namespace WebApplication.PL
@@ -37,6 +39,8 @@ namespace WebApplication.PL
 			{
 				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
 			}); //Default Scoped (ApplicationDbContext,DbContextOptions)
+
+			services.AddScoped<IDepartmentRepository,DepartmentRepo>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

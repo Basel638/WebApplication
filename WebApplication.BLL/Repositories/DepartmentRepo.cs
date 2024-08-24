@@ -10,7 +10,7 @@ using WebApplication.DAL.Models;
 
 namespace WebApplication.BLL.Repositories
 {
-	internal class DepartmentRepo : IDepartmentRepository
+	public class DepartmentRepo : IDepartmentRepository
 	{
 		
 		private readonly ApplicationDbContext _dbContext; // NULL
