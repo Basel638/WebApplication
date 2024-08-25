@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -63,6 +64,13 @@ namespace WebApplication.DAL.Models
         public Gender Gender { get; set; }
 
         public EmpType EmployeeType { get; set; }
+
+
+        public int? DepartmentId { get; set; }   // Foreign Key Column
+
+        //[InverseProperty(nameof(Models.Department.Employees))]
+        // Navigational Property ONE
+        public Department Department { get; set; }
 
     }
 }

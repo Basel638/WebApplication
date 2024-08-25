@@ -17,7 +17,12 @@ namespace WebApplication.DAL.Data.Configurations
 
 			builder.Property(D=>D.Id).UseIdentityColumn(10,10);
 			builder.Property(D=>D.Name).HasColumnType("varchar").HasMaxLength(50).IsRequired();	
-			builder.Property(D=>D.Code).HasColumnType("varchar").HasMaxLength(50).IsRequired();	 
+			builder.Property(D=>D.Code).HasColumnType("varchar").HasMaxLength(50).IsRequired();
+
+			builder.HasMany(d => d.Employees)
+					.WithOne(e => e.Department)
+					.OnDelete(DeleteBehavior.Cascade);
+
 		}
 	}
 }

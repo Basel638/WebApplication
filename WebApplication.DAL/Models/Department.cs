@@ -7,17 +7,19 @@ using System.Threading.Tasks;
 
 namespace WebApplication.DAL.Models
 {
-	public class Department:ModelBase
+	public class Department : ModelBase
 	{
-		[Required(ErrorMessage ="Code is Required !!")]
+		[Required(ErrorMessage = "Code is Required !!")]
 
-        public string Code { get; set; }
+		public string Code { get; set; }
 
-        [Required(ErrorMessage = "Name is Required !!")]
-        public string Name { get; set; }
+		[Required(ErrorMessage = "Name is Required !!")]
+		public string Name { get; set; }
 
 		[Display(Name = "Date Of Creation")]
 		public DateTime DateOfCreation { get; set; }
 
+		//Navigational Propperty Many
+		public ICollection<Employee> Employees { get; set; } = new HashSet<Employee>();
 	}
 }
