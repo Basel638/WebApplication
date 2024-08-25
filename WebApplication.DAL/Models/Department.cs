@@ -10,7 +10,8 @@ namespace WebApplication.DAL.Models
 	public class Department:ModelBase
 	{
 		[Required(ErrorMessage ="Code is Required !!")]
-		public string Code { get; set; }
+
+        public string Code { get; set; }
 
         [Required(ErrorMessage = "Name is Required !!")]
         public string Name { get; set; }
