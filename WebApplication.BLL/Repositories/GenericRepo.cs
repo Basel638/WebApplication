@@ -14,7 +14,7 @@ namespace WebApplication.BLL.Repositories
     {
         private protected readonly ApplicationDbContext _dbContext; // NULL
 
-        public GenericRepo(ApplicationDbContext dbContext) 
+        public GenericRepo(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -31,7 +31,7 @@ namespace WebApplication.BLL.Repositories
             return _dbContext.SaveChanges();
         }
 
-        public T Get(int id)
+        public T Get(int? id)
         {
             // Local => Memory of Application
             ///var T = _dbContext.T.Local.Where(D => D.Id == id).FirstOrDefault();
@@ -41,13 +41,19 @@ namespace WebApplication.BLL.Repositories
             ///return T;
 
             //return _dbContext.T.Find(id);
+
             return _dbContext.Find<T>(id); // EF Core 3.1 New Feature
 
+            //return (T)_dbContext.Employees.Where(E => E.Id == id).Include(E => E.Department);     // Error غريب 
         }
 
         public IEnumerable<T> GetAll()
         {
-            return _dbContext.Set<T>().AsNoTracking().ToList();
+            if (typeof(T) == typeof(Employee))
+                return (IEnumerable<T>)_dbContext.Employees.Include(E => E.Department).AsNoTracking().ToList();
+            else
+                return _dbContext.Set<T>().AsNoTracking().ToList();
+
         }
 
         public int Update(T entity)

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Employee>
+﻿@model IEnumerable<EmployeeViewModel>
 
 
 @{
@@ -9,11 +9,11 @@
 	string ViewBagMessage = ViewBag.Message; //Compiler Can't Enforce Type Safety -> Not Require Type Conversion [Weekly Type]
 }
 
-@* 
+@*
 <div class="alert-warning">
 	@ViewData["Message"]
 
-	
+
 </div>
 
 <div class="alert-warning">
@@ -21,11 +21,11 @@
 </div> *@
 
 
-@if(!string.IsNullOrEmpty( TempData["Message"] as string))
+@if (!string.IsNullOrEmpty(TempData["Message"] as string))
 {
 	<div class="alert alert-primary">
-	@TempData["Message"]
-</div>
+		@TempData["Message"]
+	</div>
 }
 
 
@@ -37,20 +37,35 @@
 <a asp-controller="Employee" asp-action="Create" class="btn btn-primary">Create New Employees</a>
 <br />
 
+<div class="row justify-content-center align-items-md-center mt-5">
+
+	<form asp-action="Index" class="row col-8 offset-2">
+
+		<div class="col-8">
+			<input type="text" class="form-control" name="searchInp" placeholder="Search By Name" />
+		</div>
+		<div class="col-4">
+			<input type="submit" value="Search" class="btn btn-success" />
+		</div>
+
+	</form>
+</div>
+
 @if (Model.Count() > 0)
 {
 	<table class="mt-4 table table-striped table-hover">
 		<thead>
 			<tr>
 				<th>@Html.DisplayNameFor(D => D.Name)</th>
-				<th>@Html.DisplayNameFor(D => D.Email)</th>
+				<th>@Html.DisplayNameFor(D => D.Age)</th>
 				<th>@Html.DisplayNameFor(D => D.Salary)</th>
 				<th>@Html.DisplayNameFor(D => D.IsActive)</th>
 				@* <th>@Html.DisplayNameFor(D => D.PhoneNumber)</th> *@
 				@* <th>@Html.DisplayNameFor(D => D.EmployeeType)</th> *@
+				<th>@Html.DisplayNameFor(D => D.Department)</th>
 				<th>@Html.DisplayNameFor(D => D.Gender)</th>
+				<th>@Html.DisplayNameFor(D => D.Email)</th>
 				@* <th>@Html.DisplayNameFor(D => D.HiringDate)</th> *@
-				<th>@Html.DisplayNameFor(D => D.Age)</th>
 				<th>Details</th>
 				<th>Update</th>
 				<th>Delete</th>
@@ -62,11 +77,12 @@
 				<tr>
 					<td>@employee.Name</td>
 					<td>@employee.Age</td>
-					<td>@Html.DisplayFor(M=> employee.Salary)</td>
-					<td>@Html.DisplayFor(M=>employee.IsActive)</td>
+					<td>@Html.DisplayFor(M => employee.Salary)</td>
+					<td>@Html.DisplayFor(M => employee.IsActive)</td>
+					<td>@employee.Department?.Name</td>
 					<td>@employee.Gender</td>
-					<td>@Html.DisplayFor(M=>employee.Email)</td>
-					<partial name="_ButtonsPartial" model="@employee.Id"/>
+					<td>@Html.DisplayFor(M => employee.Email)</td>
+					<partial name="_ButtonsPartial" model="@employee.Id" />
 				</tr>
 
 			}
