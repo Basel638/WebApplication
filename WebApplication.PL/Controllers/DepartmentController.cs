@@ -13,17 +13,17 @@ namespace WebApplication.PL.Controllers
     //	Assocssiation (Composition [Required]): DepartmentController has a DepartmentRepository
     public class DepartmentController : Controller
     {
-        private readonly IDepartmentRepository _departmentRepo; //NULL
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _env;
 
-        public DepartmentController(IDepartmentRepository departmentRepo, IWebHostEnvironment env) // Ask CLR for creating an object from class impllementing IDepartmentRepository
+        public DepartmentController(IUnitOfWork unitOfWork, IWebHostEnvironment env) // Ask CLR for creating an object from class impllementing IDepartmentRepository
         {
-            _departmentRepo = departmentRepo;
+            _unitOfWork = unitOfWork;
             _env = env;
         }
         public IActionResult Index()
         {
-            var departments = _departmentRepo.GetAll(); 
+            var departments = _unitOfWork.Repository<Department>().GetAll(); 
             return View(departments);
         }
         [HttpGet]
@@ -38,7 +38,8 @@ namespace WebApplication.PL.Controllers
         {
             if (ModelState.IsValid) // Server Side Validation
             {
-                var count = _departmentRepo.Add(department);
+               _unitOfWork.Repository<Department>().Add(department);
+                var count = _unitOfWork.Complete();
                 if (count > 0)
                     return RedirectToAction(nameof(Index));
             }
@@ -55,7 +56,7 @@ namespace WebApplication.PL.Controllers
             if (id is null)
                 return BadRequest();    // 400
 
-            var department = _departmentRepo.Get(id.Value);
+            var department = _unitOfWork.Repository<Department>().Get(id.Value);
 
             if (department is null)
                 return NotFound();      // 404
@@ -97,7 +98,8 @@ namespace WebApplication.PL.Controllers
 
             try
             {
-                _departmentRepo.Update(department);
+                _unitOfWork.Repository<Department>().Update(department);
+                _unitOfWork.Complete();
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
@@ -127,8 +129,8 @@ namespace WebApplication.PL.Controllers
         {
             try
             {
-                _departmentRepo.Delete(department);
-
+                _unitOfWork.Repository<Department>().Delete(department);
+                _unitOfWork.Complete();
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)

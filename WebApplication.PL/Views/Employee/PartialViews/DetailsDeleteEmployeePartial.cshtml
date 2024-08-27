@@ -1,9 +1,9 @@
 ﻿@model EmployeeViewModel
 
-@inject IDepartmentRepository _departmentRepo;
+@inject IUnitOfWork _unitOfWork;
 @{
 
-    var department = _departmentRepo.Get(Model?.DepartmentId)?.Name;
+    var department = _unitOfWork.Repository<Department>().Get(Model?.DepartmentId)?.Name;
 }
 
 <div class="form-group">

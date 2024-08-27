@@ -14,7 +14,7 @@ namespace WebApplication.BLL.Repositories
     {
        // private readonly ApplicationDbContext _dbContext;
 
-        public EmployeeRepo(ApplicationDbContext dbContext):base(dbContext) // Ask CLR for Creating Object from ApplicationDbContext Class
+        public EmployeeRepo(ApplicationDbContext dbContext):base(dbContext) 
         {
          //   _dbContext = dbContext;
         }

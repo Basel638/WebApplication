@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using WebApplication.BLL.Interfaces;
+using WebApplication.BLL.Repositories;
 using WebApplication.DAL.Models;
 using WebApplication.PL.ViewModels;
 
@@ -14,24 +15,30 @@ namespace WebApplication.PL.Controllers
 {
 	public class EmployeeController : Controller
 	{
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly IEmployeeRepository _employeeRepo; //NULL
+        //private readonly IEmployeeRepository _employeeRepo; //NULL
         //private readonly IDepartmentRepository _departmentRepo;
         private readonly IWebHostEnvironment _env;
 
-		public EmployeeController(IMapper mapper,IEmployeeRepository employeeRepo,/*IDepartmentRepository departmentRepo,*/ IWebHostEnvironment env) // Ask CLR for creating an object from class impllementing IEmployeeRepository
+		public EmployeeController
+			( /*IEmployeeRepository employeeRepo*/ /*IDepartmentRepository departmentRepo,*/  // Ask CLR for creating an object from class impllementing IEmployeeRepository 
+			IUnitOfWork unitOfWork,IMapper mapper , IWebHostEnvironment env)
 		{
+			_unitOfWork = unitOfWork;
             _mapper = mapper;
-            _employeeRepo = employeeRepo;
-            //_departmentRepo = departmentRepo;
             _env = env;
+            //_employeeRepo = employeeRepo;
+            //_departmentRepo = departmentRepo;
 		}
 		public IActionResult Index(string searchInp)
 		{
 			var Employees= Enumerable.Empty<Employee>();
+
+			var employeeRepo = _unitOfWork.Repository<Employee>() as EmployeeRepo;
 			if (!string.IsNullOrEmpty(searchInp))
 			{
-				 Employees = _employeeRepo.GetEmployeesByName(searchInp.ToLower());
+				 Employees = employeeRepo.GetEmployeesByName(searchInp.ToLower());
 			}
 			else
 			{
@@ -46,7 +53,7 @@ namespace WebApplication.PL.Controllers
 			ViewBag.Message = "Hello ViewBag";
 
 
-			 Employees = _employeeRepo.GetAll();
+			 Employees = employeeRepo.GetAll();
 			}
 			var mappedEmps = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeViewModel>>(Employees);
 
@@ -80,12 +87,20 @@ namespace WebApplication.PL.Controllers
 
 				var mappedEmp = _mapper.Map<EmployeeViewModel, Employee>(employeeVM);
 
-				var count = _employeeRepo.Add(mappedEmp);
+				 _unitOfWork.Repository<Employee>().Add(mappedEmp);
+
+				/// Core Benefit Of UnitOfWork 
+				// 2. Update Department    (Draft Example)
+				// _unitOfWork.DepartmentRepository.Update(department);
+
+				// 3. Delete Project    (Draft Example)
+				// _unitOfWork.ProjectRepository.Delete(Project);
+
 
 
 				// 3. TempData
-
-				if (count > 0)
+				var count = _unitOfWork.Complete();
+                if (count > 0)
 					TempData["Message"] = "Employee is Created Successfully";
 
 				else
@@ -107,7 +122,7 @@ namespace WebApplication.PL.Controllers
 			if (id is null)
 				return BadRequest();    // 400
 
-			var employee = _employeeRepo.Get(id.Value);
+			var employee = _unitOfWork.Repository<Employee>().Get(id.Value);
 
 			var mappedEmp = _mapper.Map<Employee, EmployeeViewModel>(employee);
 			if (employee is null)
@@ -153,7 +168,8 @@ namespace WebApplication.PL.Controllers
 			{
                 var mappedEmp = _mapper.Map<EmployeeViewModel, Employee>(employeeVM);
 
-                _employeeRepo.Update(mappedEmp);
+                _unitOfWork.Repository<Employee>().Update(mappedEmp);
+				_unitOfWork.Complete();
 				return RedirectToAction(nameof(Index));
 			}
 			catch (Exception ex)
@@ -184,8 +200,8 @@ namespace WebApplication.PL.Controllers
 			try
 			{
 				var mappedEmp = _mapper.Map<EmployeeViewModel, Employee>(employeeVM);
-				_employeeRepo.Delete(mappedEmp);
-
+				_unitOfWork.Repository<Employee>().Delete(mappedEmp);
+				_unitOfWork.Complete();
 				return RedirectToAction(nameof(Index));
 			}
 			catch (Exception ex)
