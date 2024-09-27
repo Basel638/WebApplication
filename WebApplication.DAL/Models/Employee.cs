@@ -61,5 +61,7 @@ namespace WebApplication.DAL.Models
         // Navigational Property ONE
         public Department Department { get; set; }
 
+        public string ImageName { get; set; }
+
     }
 }

@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34701.34
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication.PL", "WebApplication.PL\WebApplication.PL.csproj", "{E076F081-E2C5-434A-9BB4-FA031A24E572}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication.PL", "WebApplication.PL\WebApplication.PL.csproj", "{E076F081-E2C5-434A-9BB4-FA031A24E572}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication.DAL", "WebApplication.DAL\WebApplication.DAL.csproj", "{504A36A4-39B2-44B2-9B74-1CFA9EFB6C23}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication.DAL", "WebApplication.DAL\WebApplication.DAL.csproj", "{504A36A4-39B2-44B2-9B74-1CFA9EFB6C23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication.BLL", "WebApplication.BLL\WebApplication.BLL.csproj", "{57026238-045C-4FD2-B629-3DD5CD19415C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication.BLL", "WebApplication.BLL\WebApplication.BLL.csproj", "{57026238-045C-4FD2-B629-3DD5CD19415C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

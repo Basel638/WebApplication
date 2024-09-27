@@ -8,10 +8,10 @@ using WebApplication.DAL.Models;
 namespace WebApplication.BLL.Interfaces
 {
     // Property Signature
-    public interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork : IAsyncDisposable
     {
 
         IGenericRepository<T> Repository<T>() where T : ModelBase;
-        int Complete();
+        Task<int> Complete();
     }
 }

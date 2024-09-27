@@ -19,7 +19,7 @@ namespace WebApplication.BLL.Repositories
             _dbContext = dbContext;
         }
 
-        public void Add(T entity)
+        public  void Add(T entity)
         {
             _dbContext.Add(entity);
         }
@@ -29,7 +29,7 @@ namespace WebApplication.BLL.Repositories
             _dbContext.Remove(entity);
         }
 
-        public T Get(int? id)
+        public async Task<T> Get(int? id)
         {
             // Local => Memory of Application
             ///var T = _dbContext.T.Local.Where(D => D.Id == id).FirstOrDefault();
@@ -40,17 +40,17 @@ namespace WebApplication.BLL.Repositories
 
             //return _dbContext.T.Find(id);
 
-            return _dbContext.Find<T>(id); // EF Core 3.1 New Feature
+            return  await _dbContext.FindAsync<T>(id); // EF Core 3.1 New Feature
 
             //return (T)_dbContext.Employees.Where(E => E.Id == id).Include(E => E.Department);     // Error غريب 
         }
 
-        public IEnumerable<T> GetAll()
+        public async Task<IEnumerable<T>> GetAll()
         {
             if (typeof(T) == typeof(Employee))
-                return (IEnumerable<T>)_dbContext.Employees.Include(E => E.Department).AsNoTracking().ToList();
+                return (IEnumerable<T>)await _dbContext.Employees.Include(E => E.Department).AsNoTracking().ToListAsync();
             else
-                return _dbContext.Set<T>().AsNoTracking().ToList();
+                return await _dbContext.Set<T>().AsNoTracking().ToListAsync();
 
         }
 

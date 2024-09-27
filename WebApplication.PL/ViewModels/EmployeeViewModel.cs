@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System;
 using WebApplication.DAL.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace WebApplication.PL.ViewModels
 {
@@ -52,5 +53,9 @@ namespace WebApplication.PL.ViewModels
 		// Navigational Property ONE
 		public Department Department { get; set; }
 
-	}
+        public IFormFile Image  { get; set; }
+
+        public string ImageName { get; set; }
+
+    }
 }

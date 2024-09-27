@@ -3,8 +3,13 @@
 @inject IUnitOfWork _unitOfWork;
 @{
 
-    var department = _unitOfWork.Repository<Department>().Get(Model?.DepartmentId)?.Name;
+    var department =await _unitOfWork.Repository<Department>().Get(Model?.DepartmentId)/* ?.Name */;
 }
+
+
+<div>
+    <img src="~/files/images/@Model.ImageName" width="75" class="img-fluid rounded-circle" alt=" Employee Image"/>
+</div>
 
 <div class="form-group">
 

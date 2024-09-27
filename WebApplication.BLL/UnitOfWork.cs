@@ -47,13 +47,13 @@ namespace WebApplication.BLL
             return _repositories[key] as IGenericRepository<T>;
 
         }
-        public int Complete()
-        => _dbContext.SaveChanges();
+        public async Task<int> Complete()
+        => await _dbContext.SaveChangesAsync();
 
 
 
-        public void Dispose()
-            => _dbContext.Dispose();
+        public async ValueTask DisposeAsync()
+            => await _dbContext.DisposeAsync();
 
     }
 }

@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Threading.Tasks;
 using WebApplication.BLL.Interfaces;
 using WebApplication.BLL.Repositories;
 using WebApplication.DAL.Models;
@@ -11,6 +13,7 @@ namespace WebApplication.PL.Controllers
     // 2 Relationships
     //	Inhertiance : DepartmentController is Controller
     //	Assocssiation (Composition [Required]): DepartmentController has a DepartmentRepository
+    [Authorize]
     public class DepartmentController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -21,9 +24,9 @@ namespace WebApplication.PL.Controllers
             _unitOfWork = unitOfWork;
             _env = env;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var departments = _unitOfWork.Repository<Department>().GetAll(); 
+            var departments =await _unitOfWork.Repository<Department>().GetAll(); 
             return View(departments);
         }
         [HttpGet]
@@ -34,12 +37,12 @@ namespace WebApplication.PL.Controllers
 
 
         [HttpPost]
-        public IActionResult Create(Department department)
+        public async Task<IActionResult> Create(Department department)
         {
             if (ModelState.IsValid) // Server Side Validation
             {
                _unitOfWork.Repository<Department>().Add(department);
-                var count = _unitOfWork.Complete();
+                var count = await _unitOfWork.Complete();
                 if (count > 0)
                     return RedirectToAction(nameof(Index));
             }
@@ -51,12 +54,12 @@ namespace WebApplication.PL.Controllers
         // /Department/Details      => Nullable Id
 
         [HttpGet]
-        public IActionResult Details(int? id, string viewName = "Details")
+        public async Task<IActionResult> Details(int? id, string viewName = "Details")
         {
             if (id is null)
                 return BadRequest();    // 400
 
-            var department = _unitOfWork.Repository<Department>().Get(id.Value);
+            var department = await _unitOfWork.Repository<Department>().Get(id.Value);
 
             if (department is null)
                 return NotFound();      // 404
@@ -67,7 +70,7 @@ namespace WebApplication.PL.Controllers
         // /Department/Edit/10
         // /Department/Edit
         [HttpGet]
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             /*
             if(!id.HasValue)
@@ -79,13 +82,13 @@ namespace WebApplication.PL.Controllers
 
             return View(department);*/
 
-            return Details(id, "Edit");
+            return await Details(id, "Edit");
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit([FromRoute]int id,Department department)
+        public async Task<IActionResult> Edit([FromRoute]int id,Department department)
         {
 
             if(id != department.Id)
@@ -99,7 +102,7 @@ namespace WebApplication.PL.Controllers
             try
             {
                 _unitOfWork.Repository<Department>().Update(department);
-                _unitOfWork.Complete();
+               await _unitOfWork.Complete();
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
@@ -118,19 +121,19 @@ namespace WebApplication.PL.Controllers
 
 
         // /Department/Delete/10
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            return Details(id, "Delete");
+            return await Details(id, "Delete");
         }
 
 
         [HttpPost]
-        public IActionResult Delete(Department department)
+        public async Task<IActionResult> Delete(Department department)
         {
             try
             {
                 _unitOfWork.Repository<Department>().Delete(department);
-                _unitOfWork.Complete();
+             await   _unitOfWork.Complete();
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
